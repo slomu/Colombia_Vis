@@ -1,6 +1,22 @@
 // Author : Tim Karwasz
 // This script uses plotly to draw grpahs. Ploty is based on D3
 
+// These consts are used to dynamically create the dropdown metric list
+// the key from the object is displayed on the page and the value is used to get the data from the csv
+const dropdownMetric = document.getElementById("dropdownMetric");
+// change the values here, to add new Metrics (The value must be the name of a column in data.csv)
+const dropdownSelections = {
+    "Niwi": "niwi",
+    "Iwi": "iwi"
+}
+
+// same goes for the bubble size dropdown list
+const dropdownBubble = document.getElementById("dropdownMetric2");
+// change the values here, to add new bubble size metric (The value must be the name of a column in data.csv)
+const dropdownBubbleSelections = {
+    "Test2": "test2",
+}
+
 
 // placeholder for the data that are read in from the csv
 var csvData;
@@ -78,6 +94,27 @@ setTimeout(function() {
 // this function draws the default graph the page starts out with
 function defaultLayout() {
 
+    // this creates the dropdown values in the html
+    for (let key in dropdownSelections) {
+        let option = document.createElement("option");
+        option.setAttribute('value', dropdownSelections[key]);
+
+        let optionText = document.createTextNode(key);
+        option.appendChild(optionText);
+
+        dropdownMetric.appendChild(option);
+    }
+
+    for (let key in dropdownBubbleSelections) {
+        let option = document.createElement("option");
+        option.setAttribute('value', dropdownBubbleSelections[key]);
+
+        let optionText = document.createTextNode(key);
+        option.appendChild(optionText);
+
+        dropdownBubble.appendChild(option);
+    }
+
     // add data to the x axis
     graphData["x"] = csvData["norm"]["$data"];
 
@@ -89,9 +126,10 @@ function defaultLayout() {
 
     // add data to the hover box
     graphData["text"] = csvData["dep"]["$data"];
-    
+
     // draw the default plot
     Plotly.newPlot('graph', [graphData], template_layout);
+
 }
 
 
