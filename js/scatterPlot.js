@@ -6,15 +6,16 @@
 const dropdownMetric = document.getElementById("dropdownMetric");
 // change the values here, to add new Metrics (The value must be the name of a column in data.csv)
 const dropdownSelections = {
-    "Niwi": "niwi",
-    "Iwi": "iwi"
+    "Number of Cases Aggregation Mean International Wealth Index score of region": "niwi",
+    "Mean International Wealth Index (IWI) score of region": "iwi"
 }
 
 // same goes for the bubble size dropdown list
 const dropdownBubble = document.getElementById("dropdownMetric2");
-// change the values here, to add new bubble size metric (The value must be the name of a column in data.csv)
+// change the values here, to add new bubble size metrics (The value must be the name of a column in data.csv)
 const dropdownBubbleSelections = {
-    "Test2": "test2",
+    "Mean years education of women aged 20+": "womedyr20",
+    "Mean years education of men aged 20+": "menedyr20",
 }
 
 
@@ -26,11 +27,17 @@ var csvData;
 var graphData = {
     x: [],
     y: [],
+    customdata: [],
+    hovertemplate: '<i>X Value</i>: %{x:.2f}<extra></extra>' +
+                   '<br><i>Y Value</i>: %{y:.2f}' +
+                   '<br><i>Z Value</i>: %{customdata:.2f}' +
+                   '<br><i>Department</i>: %{text}',
     text: [],
     mode: 'markers',
     marker: {
         // needs default size in the default function
-        size: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
+        size: [],
+        color: []
     }
 };
 
@@ -68,6 +75,12 @@ var template_layout = {
         }
     }
 };
+
+
+// the plot object, this is needed for the events
+var myPlot = document.getElementById('graph'),
+    data = graphData,
+    layout = template_layout;
 
 
 // read data.csv
@@ -127,8 +140,25 @@ function defaultLayout() {
     // add data to the hover box
     graphData["text"] = csvData["dep"]["$data"];
 
+    // set default bubble size
+    graphData["marker"]["size"] = scaleDataValuesAndReturn(csvData["electr"]["$data"]);
+
+    // save the original value in the customdata array
+    graphData["customdata"] = csvData["electr"]["$data"];
+
+    // set the color of the bubbles based on their size
+    graphData["marker"]["color"] = returnColorArray(graphData["marker"]["size"]);
+
     // draw the default plot
     Plotly.newPlot('graph', [graphData], template_layout);
+
+    myPlot.on('plotly_hover', function(data) {
+
+        // find the data which can be accessed
+        console.log(data["points"][0]);
+
+        //alert(`You hovered over point number ${data["points"][0]["pointNumber"]} with an x value of ${data["points"][0]["x"]} and a y value of ${data["points"][0]["y"]}, the text reads ${data["points"][0]["text"]} `);
+    });
 
 }
 
@@ -153,19 +183,67 @@ function changeData(value) {
 // function to control bubble size
 function changeBubbleSize(value) {
 
-    // override marker size TODO put a variable from the dataset into here
-    // graphData["marker"]["size"] = csvData[value]["$data"]  !!needs to be scaled down/up to a reasonable level!!
-    graphData.marker = eval(value);
+    // change marker size to the metric chosen by the user
+    graphData["marker"]["size"] = scaleDataValuesAndReturn(csvData[value]["$data"]);
+
+    // save the original value in the customdata array
+    graphData["customdata"] = csvData[value]["$data"];
+
+    // update marker color as it depends on the size of the bubbles
+    graphData["marker"]["color"] = returnColorArray(graphData["marker"]["size"]);
 
     // update the graph
     Plotly.react('graph', [graphData], template_layout);
 }
 
 
-// different bubble sizes TODO make these flexible too in function 
-var test1 = {
-    size: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
-};
-var test2 = {
-    size: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
-};
+// this function takes an array as input and returns the same array scaled to a pre-defined range (10-60)
+function scaleDataValuesAndReturn(dataArray) {
+
+    // input array
+    var input = dataArray;
+
+    // output array
+    var output = [];
+
+    input.forEach(function(number) {
+        output.push(convertRange(number, [Math.min.apply(null, input), Math.max.apply(null, input)], [10, 70]))
+    });
+
+    return output;
+
+}
+
+
+// this small helper function takes a value and the range that value is in, 
+// as well as the range the value shall be in after the function call and converts the value 
+function convertRange(value, r1, r2) {
+    return (value - r1[0]) * (r2[1] - r2[0]) / (r1[1] - r1[0]) + r2[0];
+}
+
+
+// this function takes a data array containg bubble sizes and returns a array containing color values
+function returnColorArray(dataArray) {
+
+    var input = dataArray;
+
+    var output = [];
+
+    input.forEach(function(number) {
+        output.push(setColorBasedOnValue(number))
+    });
+
+    return output;
+}
+
+
+// returns a color value, the color is based on the size of the bubble
+function setColorBasedOnValue(value) {
+    return value > 58 ? '#bd0026' :
+        value > 46 ? '#f03b20' :
+        value > 34 ? '#fd8d3c' :
+        value > 22 ? '#feb24c' :
+        value >= 10 ? '#fed976' :
+        'blue';
+}
+

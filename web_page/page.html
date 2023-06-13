@@ -3,7 +3,40 @@
 
 <head>
     <title>Colombian Domestic Violence</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+  background-image: url('../img/back.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 10px;
+}
+.grid-item {
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+
+.box {
+        width: 120px;
+        height: 30px;
+        border: 1px solid #999;
+        font-size: 18px;
+        color: #1c87c9;
+        background-color: #eee;
+        border-radius: 5px;
+        box-shadow: 4px 4px #ccc;
+      }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
     <script src='https://cdn.plot.ly/plotly-2.20.0.min.js'></script>
     <meta charset="utf-8">
@@ -18,12 +51,12 @@
     <div class="grid-container">
         <div class="grid-item">
             <label for="metric">Choose a metric to compare against:</label>
-            <select name="metric" id="dropdownMetric" onchange="changeData(this.value);">
-                <option selected="selected" value="gini">Gini</option>
+            <select class="box" name="metric" id="dropdownMetric" onchange="changeData(this.value);">
+                <option selected="selected" value="gini">Gini coefficient wealth inequality</option>
             </select>
             <div class="grid-item"><label for="metric">Bubble size metric:</label>
-            <select name="bubbleMetric" id="dropdownMetric2" onchange="changeBubbleSize(this.value);">
-                <option selected="selected" value="test1">test1</option>
+            <select class="box" name="bubbleMetric" id="dropdownMetric2" onchange="changeBubbleSize(this.value);">
+                <option selected="selected" value="electr">% households with electricity</option>
             </select></div>
         </div>
         <div id="graph" class="grid-item">
