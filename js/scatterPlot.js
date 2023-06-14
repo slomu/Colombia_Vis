@@ -56,7 +56,7 @@ var template_layout = {
     },
     xaxis: {
         title: {
-            text: 'Domestic Violene Cases per 1000 population',
+            text: 'Domestic Violence Cases per 1000 population',
             font: {
                 family: 'Courier New, monospace',
                 size: 18,
@@ -141,10 +141,10 @@ function defaultLayout() {
     graphData["text"] = csvData["dep"]["$data"];
 
     // set default bubble size
-    graphData["marker"]["size"] = scaleDataValuesAndReturn(csvData["electr"]["$data"]);
+    graphData["marker"]["size"] = scaleDataValuesAndReturn(csvData["qhousing"]["$data"]);
 
     // save the original value in the customdata array
-    graphData["customdata"] = csvData["electr"]["$data"];
+    graphData["customdata"] = csvData["qhousing"]["$data"];
 
     // set the color of the bubbles based on their size
     graphData["marker"]["color"] = returnColorArray(graphData["marker"]["size"]);
