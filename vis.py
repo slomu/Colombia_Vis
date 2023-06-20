@@ -8,6 +8,7 @@ def my_form():
     df = pd.read_csv('data/dv_data.csv')
     df2 = pd.read_csv("data/popdata.csv")
     df3 = df["DEPARTAMENTO"].value_counts().to_dict().items()
+    col = request.form["col"]
     dft = {}
     for x,y in df3:
         p = int(df2[df2["dep"] == x].population)
@@ -28,7 +29,7 @@ def my_form():
     for u,v in df6:
         dfw[u] = int(v)
     
-    return render_template("choropleth.html", data = dft, dataG = dfg, dataA = dfa, dataW = dfw)
+    return render_template("choropleth.html", data = dft, dataG = dfg, dataA = dfa, dataW = dfw, col = col)
 
 @app.route("/", methods = ["POST"])
 def index():
@@ -38,6 +39,7 @@ def index():
         c1 = request.form["weapon"]
         c2 = request.form["age"]
         c3 = request.form["gender"]
+        col = request.form["col"]
         if c1 != "0":
             df = df[df["ARMAS MEDIOS"] == c1]
         if c2 != "0":
@@ -68,7 +70,7 @@ def index():
         for u,v in df6:
             dfw[u] = int(v)
 
-        return render_template("choropleth.html" , data = dft, dataG = dfg, dataA = dfa, dataW = dfw)
+        return render_template("choropleth.html" , data = dft, dataG = dfg, dataA = dfa, dataW = dfw, col = col)
 
 
 if __name__ == "__main__":
