@@ -8,9 +8,9 @@
     <label>
       <input type="radio" value="0" name = "weapon" id = "all1" checked />all</label>
     <label>
-      <input type="radio" value="ARMA BLANCA / CORTOPUNZANTE" name = "weapon" id = "stabbing weapon" />stabbing weapon</label>
+      <input type="radio" value="stabbing weapon" name = "weapon" id = "stabbing weapon" />stabbing weapon</label>
     <label>
-      <input type="radio" value="ARMA DE FUEGO" name = "weapon" id="firearm" />firearm</label>      
+      <input type="radio" value="firearm" name = "weapon" id="firearm" />firearm</label>      
     <label>
       <input type="radio" value="blunt weapon" name = "weapon" id="blunt weapon" />blunt weapon</label>
     <label>
@@ -284,7 +284,7 @@
             .attr("d", d3.geoPath()
             .projection(projection)
             )
-            .attr("fill", (d) => color((dat[(d.properties.NOMBRE_DPT)])|| "#D3D3D3"))
+            .attr("fill", function(d){if(isNaN(dat[(d.properties.NOMBRE_DPT)])){return "#B2BEB5"}else{return color((dat[(d.properties.NOMBRE_DPT)]))}})
             .style("stroke", "transparent")
             .attr("class", function(d){ return "properties.NOMBRE_DPT" } )
             .style("opacity", 1)

@@ -8,7 +8,7 @@ def my_form():
     df = pd.read_csv('data/dv_data.csv')
     df2 = pd.read_csv("data/popdata.csv")
     df3 = df["DEPARTAMENTO"].value_counts().to_dict().items()
-    col = request.form["col"]
+    col = "1"
     dft = {}
     for x,y in df3:
         p = int(df2[df2["dep"] == x].population)
