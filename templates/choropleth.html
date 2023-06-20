@@ -49,6 +49,7 @@
       <input type="radio" value="1" name = "col" id="col1" checked />static</label>
     <label>
       <input type="radio" value="2" name = "col" id="col2" />dynamic</label>
+
 </div>  
 
 <input type="submit" name = "action" value="Submit" onclick="onChange()" />
@@ -170,7 +171,6 @@
         }
 
         color = document.querySelector('input[name="col"]:checked').value;
-        console.log(color)
         if(color == "1"){
           color = colorScale
         }
@@ -185,7 +185,7 @@
             .attr("d", d3.geoPath()
             .projection(projection)
             )
-            .attr("fill", (d) => color((dat[(d.properties.NOMBRE_DPT)])))
+            .attr("fill", (d) => color((dat[(d.properties.NOMBRE_DPT)])|| "#D3D3D3"))
             .style("stroke", "transparent")
             .attr("class", function(d){ return "properties.NOMBRE_DPT" } )
             .style("opacity", 1)
