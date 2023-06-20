@@ -42,13 +42,14 @@
   <label>
     <input type="radio" value="FEMENINO" name = "gender" id="female" />female</label>
 </div>
-<!--div>
-    <h3>colosheme</h3>
+
+<div>
+    <h3>color sheme</h3>
     <label>
-      <input type="radio" value="1" name = "col" id="col1" checked />set</label>
+      <input type="radio" value="1" name = "col" id="col1" checked />static</label>
     <label>
-      <input type="radio" value="2" name = "col" id="col2" />variably</label>
-</div-->  
+      <input type="radio" value="2" name = "col" id="col2" />dynamic</label>
+</div>  
 
 <input type="submit" name = "action" value="Submit" onclick="onChange()" />
 <section data-type='{{ data|tojson }}'></section>
@@ -91,10 +92,17 @@
       .range(["#fff7ec","#fee9cb","#fdd8a9","#fdc28c","#fca16d","#f67b52","#e65339","#ce2619","#ab0604","#7f0000"])
 
 
-    
+    var count = 1;
     let section = document.querySelectorAll("section");
     for (item of section) {
+      if(count == 1){
         var dat = JSON.parse(item.getAttribute("data-type"));
+      }
+      else if(count ==2 ){
+        var colo = item.getAttribute("data-type");
+      }
+      count += 1
+
     }
     let a = []
     for (x in dat){
@@ -120,7 +128,7 @@
        	.style("stroke-width", 1);
     }
 
-    function draw_choro(color){
+    function draw_choro(){
     Promise.all([
     d3.json("https://raw.githubusercontent.com/slomu/Colombia_Vis/main/data/col.geojson"),]).then(function(loadData){
         let topo = loadData[0]
@@ -161,8 +169,14 @@
                 .style("opacity", 0)
         }
 
-
-        
+        color = document.querySelector('input[name="col"]:checked').value;
+        console.log(color)
+        if(color == "1"){
+          color = colorScale
+        }
+        else if(color == "2"){
+          color = colorScale2
+        }
 
         svg.append("g")
             .selectAll("path")
@@ -182,6 +196,6 @@
     })
   }
 
-  draw_choro(colorScale)
+  draw_choro()
 
     </script>

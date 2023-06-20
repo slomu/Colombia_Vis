@@ -32,6 +32,9 @@ def index():
         dft = {}
         for x,y in df:
             p = int(df2[df2["dep"] == x].population)
+            #if c1 != "0" or c2 != "0" or c3 == "MASCULINO":
+                #dft[x] = (round((y/(p/10000)), 2))
+            #else:
             dft[x] = (round((y/(p/1000)), 2))
 
         return render_template("choropleth.html" , data = dft)
