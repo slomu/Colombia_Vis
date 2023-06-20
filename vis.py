@@ -7,12 +7,28 @@ app = Flask(__name__)
 def my_form():
     df = pd.read_csv('data/dv_data.csv')
     df2 = pd.read_csv("data/popdata.csv")
-    df = df["DEPARTAMENTO"].value_counts().to_dict().items()
+    df3 = df["DEPARTAMENTO"].value_counts().to_dict().items()
     dft = {}
-    for x,y in df:
+    for x,y in df3:
         p = int(df2[df2["dep"] == x].population)
         dft[x] = (round((y/(p/1000)), 2))
-    return render_template("choropleth.html", data = dft)
+
+    df4 = df["GENERO"].value_counts().to_dict().items()  
+    dfg = {}
+    for u,v in df4:
+        dfg[u] = int(v)
+
+    df5 = df["GRUPO ETARIO"].value_counts().to_dict().items()  
+    dfa = {}
+    for u,v in df5:
+        dfa[u] = int(v)
+
+    df6 = df["ARMAS MEDIOS"].value_counts().to_dict().items()  
+    dfw = {}
+    for u,v in df6:
+        dfw[u] = int(v)
+    
+    return render_template("choropleth.html", data = dft, dataG = dfg, dataA = dfa, dataW = dfw)
 
 @app.route("/", methods = ["POST"])
 def index():
@@ -28,16 +44,31 @@ def index():
             df = df[df["GRUPO ETARIO"] == c2]
         if c3 != "0":
             df = df[df["GENERO"] == c3]
-        df = df["DEPARTAMENTO"].value_counts().to_dict().items()
+        df3 = df["DEPARTAMENTO"].value_counts().to_dict().items()
         dft = {}
-        for x,y in df:
+        for x,y in df3:
             p = int(df2[df2["dep"] == x].population)
             #if c1 != "0" or c2 != "0" or c3 == "MASCULINO":
                 #dft[x] = (round((y/(p/10000)), 2))
             #else:
             dft[x] = (round((y/(p/1000)), 2))
 
-        return render_template("choropleth.html" , data = dft)
+        df4 = df["GENERO"].value_counts().to_dict().items()    
+        dfg = {}
+        for u,v in df4:
+            dfg[u] = int(v)
+
+        df5 = df["GRUPO ETARIO"].value_counts().to_dict().items()  
+        dfa = {}
+        for u,v in df5:
+            dfa[u] = int(v)
+
+        df6 = df["ARMAS MEDIOS"].value_counts().to_dict().items()  
+        dfw = {}
+        for u,v in df6:
+            dfw[u] = int(v)
+
+        return render_template("choropleth.html" , data = dft, dataG = dfg, dataA = dfa, dataW = dfw)
 
 
 if __name__ == "__main__":
