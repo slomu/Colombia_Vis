@@ -3,12 +3,139 @@
 
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v6.js"></script>
+<style>
+    .dropdown-check-list {
+        display: inline-block;
+    }
+
+    .dropdown-check-list .anchor {
+        position: relative;
+        cursor: pointer;
+        display: inline-block;
+        padding: 5px 50px 5px 10px;
+        border: 2px solid #ccc;
+    }
+
+    .dropdown-check-list .anchor:after {
+        position: absolute;
+        content: "";
+        border-left: 2px solid black;
+        border-top: 2px solid black;
+        padding: 5px;
+        right: 10px;
+        top: 20%;
+        -moz-transform: rotate(-135deg);
+        -ms-transform: rotate(-135deg);
+        -o-transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+        transform: rotate(-135deg);
+    }
+
+    .dropdown-check-list .anchor:active:after {
+        right: 8px;
+        top: 21%;
+    }
+
+    .dropdown-check-list ul.items {
+        padding: 2px;
+        display: none;
+        margin: 0;
+        border: 2px solid #ccc;
+        border-top: none;
+    }
+
+    .dropdown-check-list ul.items li {
+        list-style: none;
+    }
+
+    .dropdown-check-list.visible .anchor {
+        color: #0094ff;
+    }
+
+    .dropdown-check-list.visible .items {
+        display: block;
+    }
+
+    #wrapper{
+        display : flex;
+    }
+
+    h1{
+        padding:10px;
+        position: relative;
+        left:200px;
+    }
+</style>
 
 <head>
     <title>Correlationmatrix</title>
 </head>
 <body>
-    <!-- Create a div where the graph will take place -->
-    <div id="my_dataviz"></div>
-    <script src="correlationmatrix.js"></script>
+    <p>
+        <h1>Indicators for Development and Living Quality for the different Departements of Colombia</h1>
+    </p>
+    <br>
+    <div id="wrapper" class="wrapper">
+        <div id="indicators" class="dropdown-check-list" tabindex="100" width="10">
+            <span class="anchor">Select Indicators</span>
+            <ul class="items">
+                <li><input type="checkbox" checked />Select all </li><br>
+                <li><input type="checkbox" checked />iwi </li>
+                <li><input type="checkbox" checked />iwipov70</li>
+                <li><input type="checkbox" checked />iwipov50 </li>
+                <li><input type="checkbox" checked />iwipov35 </li>
+                <li><input type="checkbox" checked />gini </li>
+                <li><input type="checkbox" checked />edyr20 </li>
+                <li><input type="checkbox" checked />womedyr20</li>
+                <li><input type="checkbox" checked />menedyr20</li>
+                <li><input type="checkbox" checked />edchild</li>
+                <li><input type="checkbox" checked />workwom</li>
+                <li><input type="checkbox" checked />agedifmar</li>
+                <li><input type="checkbox" checked />infmort</li>
+            </ul>
+        </div>
+        
+        <div id="my_dataviz"></div>
+
+        <div id="departements" class="dropdown-check-list" tabindex="100">
+            <span class="anchor">Select Departements</span>
+            <ul class="items">
+                <li><input type="checkbox" checked />Select all</li><br>
+                <li><input type="checkbox" checked />SANTAFE DE BOGOTA D.C (DC)</li>
+                <li><input type="checkbox" checked />AMAZONAS (AM)</li>
+                <li><input type="checkbox" checked />ANTIOQUIA (AN)</li>
+                <li><input type="checkbox" checked />ARAUCA (AR)</li>
+                <li><input type="checkbox" checked />ATLANTICO (AT)</li>
+                <li><input type="checkbox" checked />BOLIVAR (BL)</li>
+                <li><input type="checkbox" checked />BOYACA (BY)</li>
+                <li><input type="checkbox" checked />CALDAS (CL)</li>
+                <li><input type="checkbox" checked />CAQUETA (CQ)</li>
+                <li><input type="checkbox" checked />CASANARE (CS)</li>
+                <li><input type="checkbox" checked />CAUCA (CA)</li>
+                <li><input type="checkbox" checked />CESAR (CE)</li>
+                <li><input type="checkbox" checked />CHOCO (CH)</li>
+                <li><input type="checkbox" checked />CORDOBA (short)</li>
+                <li><input type="checkbox" checked />CUNDINAMARCA (CU)</li>
+                <li><input type="checkbox" checked />GUAINIA (GN)</li>
+                <li><input type="checkbox" checked />GUAVIARE (GV)</li>
+                <li><input type="checkbox" checked />HUILA (HU)</li>
+                <li><input type="checkbox" checked />GUAJIRA (LG)</li>
+                <li><input type="checkbox" checked />MAGDALENA (MA)</li>
+                <li><input type="checkbox" checked />META (ME)</li>
+                <li><input type="checkbox" checked />NARINO (NA)</li>
+                <li><input type="checkbox" checked />NORTE DE SANTANDER (NS)</li>
+                <li><input type="checkbox" checked />PUTUMAYO (PU)</li>
+                <li><input type="checkbox" checked />QUINDIO (QD)</li>
+                <li><input type="checkbox" checked />RISARALDA (RI)</li>
+                <li><input type="checkbox" checked />SAN ANDRES (SA)</li>
+                <li><input type="checkbox" checked />SANTANDER (ST)</li>
+                <li><input type="checkbox" checked />SUCRE (SU)</li>
+                <li><input type="checkbox" checked />TOLIMA (TO)</li>
+                <li><input type="checkbox" checked />VALLE (VC)</li>
+                <li><input type="checkbox" checked />VAUPES (VP)</li>
+                <li><input type="checkbox" checked />VICHADA (VD)</li>
+            </ul>
+            </div>
+    </div>
 </body>
+<script src="correlationmatrix.js"></script>
