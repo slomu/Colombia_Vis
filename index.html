@@ -78,20 +78,22 @@
     <div id="wrapper" class="wrapper">
         <div id="indicators" class="dropdown-check-list" tabindex="100" width="10">
             <span class="anchor">Select Indicators</span>
-            <ul class="items">
-                <li><input type="checkbox" checked />Select all </li><br>
-                <li><input type="checkbox" checked />iwi </li>
-                <li><input type="checkbox" checked />iwipov70</li>
-                <li><input type="checkbox" checked />iwipov50 </li>
-                <li><input type="checkbox" checked />iwipov35 </li>
-                <li><input type="checkbox" checked />gini </li>
-                <li><input type="checkbox" checked />edyr20 </li>
-                <li><input type="checkbox" checked />womedyr20</li>
-                <li><input type="checkbox" checked />menedyr20</li>
-                <li><input type="checkbox" checked />edchild</li>
-                <li><input type="checkbox" checked />workwom</li>
-                <li><input type="checkbox" checked />agedifmar</li>
-                <li><input type="checkbox" checked />infmort</li>
+            <ul class="items" id="check_ind">
+                <li><input type="checkbox" value="all_ind" id="all_ind" checked onclick= "get_Indicators(this.id)"/>Select all </li><br>
+                <li><input type="checkbox" value="urban" id="urban" checked onclick= "get_Indicators(this.id)" />urban </li>
+                <li><input type="checkbox" value="iwi" id="iwi" checked onclick= "get_Indicators(this.id)" />iwi </li>
+                <li><input type="checkbox" value="iwipov70" id="iwipov70" checked onclick= "get_Indicators(this.id)" />iwipov70</li>
+                <li><input type="checkbox" value="iwipov50" id="iwipov50" checked onclick= "get_Indicators(this.id)" />iwipov50 </li>
+                <li><input type="checkbox" value="iwipov35" id="iwipov35" checked onclick= "get_Indicators(this.id)" />iwipov35 </li>
+                <li><input type="checkbox" value="gini" id="gini" checked onclick= "get_Indicators(this.id)" />gini </li>
+                <li><input type="checkbox" value="qhousing" id="qhousing" checked onclick= "get_Indicators(this.id)" />qhousing </li>
+                <li><input type="checkbox" value="edyr20" id="edyr20" checked onclick= "get_Indicators(this.id)" />edyr20 </li>
+                <li><input type="checkbox" value="womedyr20" id="womedyr20" checked onclick= "get_Indicators(this.id)" />womedyr20</li>
+                <li><input type="checkbox" value="menedyr20" id="menedyr20" checked onclick= "get_Indicators(this.id)" />menedyr20</li>
+                <li><input type="checkbox" value="edchild" id="edchild" checked onclick= "get_Indicators(this.id)" />edchild</li>
+                <li><input type="checkbox" value="workwom" id="workwom" checked onclick= "get_Indicators(this.id)" />workwom</li>
+                <li><input type="checkbox" value="agedifmar" id="agedifmar" checked onclick= "get_Indicators(this.id)" />agedifmar</li>
+                <li><input type="checkbox" value="infmort" id="infmort" checked onclick= "get_Indicators(this.id)" />infmort</li>
             </ul>
         </div>
         
@@ -99,43 +101,60 @@
 
         <div id="departements" class="dropdown-check-list" tabindex="100">
             <span class="anchor">Select Departements</span>
-            <ul class="items">
-                <li><input type="checkbox" checked />Select all</li><br>
-                <li><input type="checkbox" checked />SANTAFE DE BOGOTA D.C (DC)</li>
-                <li><input type="checkbox" checked />AMAZONAS (AM)</li>
-                <li><input type="checkbox" checked />ANTIOQUIA (AN)</li>
-                <li><input type="checkbox" checked />ARAUCA (AR)</li>
-                <li><input type="checkbox" checked />ATLANTICO (AT)</li>
-                <li><input type="checkbox" checked />BOLIVAR (BL)</li>
-                <li><input type="checkbox" checked />BOYACA (BY)</li>
-                <li><input type="checkbox" checked />CALDAS (CL)</li>
-                <li><input type="checkbox" checked />CAQUETA (CQ)</li>
-                <li><input type="checkbox" checked />CASANARE (CS)</li>
-                <li><input type="checkbox" checked />CAUCA (CA)</li>
-                <li><input type="checkbox" checked />CESAR (CE)</li>
-                <li><input type="checkbox" checked />CHOCO (CH)</li>
-                <li><input type="checkbox" checked />CORDOBA (short)</li>
-                <li><input type="checkbox" checked />CUNDINAMARCA (CU)</li>
-                <li><input type="checkbox" checked />GUAINIA (GN)</li>
-                <li><input type="checkbox" checked />GUAVIARE (GV)</li>
-                <li><input type="checkbox" checked />HUILA (HU)</li>
-                <li><input type="checkbox" checked />GUAJIRA (LG)</li>
-                <li><input type="checkbox" checked />MAGDALENA (MA)</li>
-                <li><input type="checkbox" checked />META (ME)</li>
-                <li><input type="checkbox" checked />NARINO (NA)</li>
-                <li><input type="checkbox" checked />NORTE DE SANTANDER (NS)</li>
-                <li><input type="checkbox" checked />PUTUMAYO (PU)</li>
-                <li><input type="checkbox" checked />QUINDIO (QD)</li>
-                <li><input type="checkbox" checked />RISARALDA (RI)</li>
-                <li><input type="checkbox" checked />SAN ANDRES (SA)</li>
-                <li><input type="checkbox" checked />SANTANDER (ST)</li>
-                <li><input type="checkbox" checked />SUCRE (SU)</li>
-                <li><input type="checkbox" checked />TOLIMA (TO)</li>
-                <li><input type="checkbox" checked />VALLE (VC)</li>
-                <li><input type="checkbox" checked />VAUPES (VP)</li>
-                <li><input type="checkbox" checked />VICHADA (VD)</li>
+            <ul class="items" id="check_dep">
+                <li><input type="checkbox" value="all_dep" id="all_dep" checked onclick= "get_Departements(this.id)" />Select all</li><br>
+                <li><input type="checkbox" value="SANTAFE DE BOGOTA D.C" id="SANTAFE DE BOGOTA D.C" checked onclick= "get_Departements(this.id)" />SANTAFE DE BOGOTA D.C (DC)</li>
+                <li><input type="checkbox" value="AMAZONAS" id="AMAZONAS" checked onclick= "get_Departements(this.id)" />AMAZONAS (AM)</li>
+                <li><input type="checkbox" value="ANTIOQUIA" id="ANTIOQUIA" checked onclick= "get_Departements(this.id)" />ANTIOQUIA (AN)</li>
+                <li><input type="checkbox" value="ARAUCA" id="ARAUCA" checked onclick= "get_Departements(this.id)" />ARAUCA (AR)</li>
+                <li><input type="checkbox" value="ATLANTICO" id="ATLANTICO" checked onclick= "get_Departements(this.id)" />ATLANTICO (AT)</li>
+                <li><input type="checkbox" value="BOLIVAR" id="BOLIVAR" checked onclick= "get_Departements(this.id)" />BOLIVAR (BL)</li>
+                <li><input type="checkbox" value="BOYACA" id="BOYACA" checked onclick= "get_Departements(this.id)" />BOYACA (BY)</li>
+                <li><input type="checkbox" value="CALDAS" id="CALDAS" checked onclick= "get_Departements(this.id)" />CALDAS (CL)</li>
+                <li><input type="checkbox" value="CAQUETA" id="CAQUETA" checked onclick= "get_Departements(this.id)" />CAQUETA (CQ)</li>
+                <li><input type="checkbox" value="CASANARE" id="CASANARE" checked onclick= "get_Departements(this.id)" />CASANARE (CS)</li>
+                <li><input type="checkbox" value="CAUCA" id="CAUCA" checked onclick= "get_Departements(this.id)" />CAUCA (CA)</li>
+                <li><input type="checkbox" value="CESAR" id="CESAR" checked onclick= "get_Departements(this.id)" />CESAR (CE)</li>
+                <li><input type="checkbox" value="CHOCO" id="CHOCO" checked onclick= "get_Departements(this.id)" />CHOCO (CH)</li>
+                <li><input type="checkbox" value="CORDOBA" id="CORDOBA" checked onclick= "get_Departements(this.id)" />CORDOBA (short)</li>
+                <li><input type="checkbox" value="CUNDINAMARCA" id="CUNDINAMARCA" checked onclick= "get_Departements(this.id)" />CUNDINAMARCA (CU)</li>
+                <li><input type="checkbox" value="GUAINIA" id="GUAINIA" checked onclick= "get_Departements(this.id)" />GUAINIA (GN)</li>
+                <li><input type="checkbox" value="GUAVIARE" id="GUAVIARE" checked onclick= "get_Departements(this.id)" />GUAVIARE (GV)</li>
+                <li><input type="checkbox" value="HUILA" id="HUILA" checked onclick= "get_Departements(this.id)" />HUILA (HU)</li>
+                <li><input type="checkbox" value="GUAJIRA" id="GUAJIRA" checked onclick= "get_Departements(this.id)" />GUAJIRA (LG)</li>
+                <li><input type="checkbox" value="MAGDALENA" id="MAGDALENA" checked onclick= "get_Departements(this.id)" />MAGDALENA (MA)</li>
+                <li><input type="checkbox" value="META" id="META" checked onclick= "get_Departements(this.id)" />META (ME)</li>
+                <li><input type="checkbox" value="NARINO" id="NARINO" checked onclick= "get_Departements(this.id)" />NARINO (NA)</li>
+                <li><input type="checkbox" value="NORTE DE SANTANDER" id="NORTE DE SANTANDER" checked onclick= "get_Departements(this.id)" />NORTE DE SANTANDER (NS)</li>
+                <li><input type="checkbox" value="PUTUMAYO" id="PUTUMAYO" checked onclick= "get_Departements(this.id)" />PUTUMAYO (PU)</li>
+                <li><input type="checkbox" value="QUINDIO" id="QUINDIO" checked onclick= "get_Departements(this.id)" />QUINDIO (QD)</li>
+                <li><input type="checkbox" value="RISARALDA" id="RISARALDA" checked onclick= "get_Departements(this.id)" />RISARALDA (RI)</li>
+                <li><input type="checkbox" value="SAN ANDRES" id="SAN ANDRES" checked onclick= "get_Departements(this.id)" />SAN ANDRES (SA)</li>
+                <li><input type="checkbox" value="SANTANDER" id="SANTANDER" checked onclick= "get_Departements(this.id)" />SANTANDER (ST)</li>
+                <li><input type="checkbox" value="SUCRE" id="SUCRE" checked onclick= "get_Departements(this.id)" />SUCRE (SU)</li>
+                <li><input type="checkbox" value="TOLIMA" id="TOLIMA" checked onclick= "get_Departements(this.id)" />TOLIMA (TO)</li>
+                <li><input type="checkbox" value="VALLE" id="VALLE" checked onclick= "get_Departements(this.id)" />VALLE (VC)</li>
+                <li><input type="checkbox" value="VAUPES" id="VAUPES" checked onclick= "get_Departements(this.id)" />VAUPES (VP)</li>
+                <li><input type="checkbox" value="VICHADA" id="VICHADA" checked onclick= "get_Departements(this.id)" />VICHADA (VD)</li>
             </ul>
             </div>
     </div>
 </body>
+<script>
+    function dropdown(item, evt) {
+        if (item.classList.contains('visible'))
+            item.classList.remove('visible');
+        else
+            item.classList.add('visible');
+    }
+
+    var checkList1 = document.getElementById('indicators');
+    var checkList2 = document.getElementById('departements');
+    checkList1.getElementsByClassName('anchor')[0].onclick = function(evt) {
+        dropdown(checkList1);
+    };
+    checkList2.getElementsByClassName('anchor')[0].onclick = function(evt) {
+        dropdown(checkList2);
+    };
+</script>
 <script src="correlationmatrix.js"></script>
