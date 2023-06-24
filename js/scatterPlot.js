@@ -6,16 +6,40 @@
 const dropdownMetric = document.getElementById("dropdownMetric");
 // change the values here, to add new Metrics (The value must be the name of a column in data.csv)
 const dropdownSelections = {
-    "Number of Cases Aggregation Mean International Wealth Index score of region": "niwi",
-    "Mean International Wealth Index (IWI) score of region": "iwi"
+    "Number of households in dataset for region": "Nhh",
+    "% population in urban areas": "urban",
+    "Mean International Wealth Index (IWI) score of region": "iwi",
+    "% poor households (with IWI value under 70)": "iwipov70",
+    "% poor households (with IWI value under 50)": "iwipov50",
+    "% poor households (with IWI value under 35)": "iwipov35",
+    "Qualtiy of housing": "qhousing",
+    "Mean years education of adults aged 20+": "edyr20",
+    "Mean years education of women aged 20+": "womedyr20",
+    "Mean years education of men aged 20+": "menedyr20",
+    "Educational attendance of children 6-20": "edchild",
+    "Percentage of women in paid employment": "workwom",
+    "Mean age difference partners (husband-wife)" :"agedifmar",
+    "Infant mortality rate": "infmort"
 }
 
 // same goes for the bubble size dropdown list
 const dropdownBubble = document.getElementById("dropdownMetric2");
 // change the values here, to add new bubble size metrics (The value must be the name of a column in data.csv)
 const dropdownBubbleSelections = {
+    "Number of households in dataset for region": "Nhh",
+    "% population in urban areas": "urban",
+    "Mean International Wealth Index (IWI) score of region": "iwi",
+    "% poor households (with IWI value under 70)": "iwipov70",
+    "% poor households (with IWI value under 50)": "iwipov50",
+    "% poor households (with IWI value under 35)": "iwipov35",
+    "Gini coefficent": "gini",
+    "Mean years education of adults aged 20+": "edyr20",
     "Mean years education of women aged 20+": "womedyr20",
     "Mean years education of men aged 20+": "menedyr20",
+    "Educational attendance of children 6-20": "edchild",
+    "Percentage of women in paid employment": "workwom",
+    "Mean age difference partners (husband-wife)" :"agedifmar",
+    "Infant mortality rate": "infmort"
 }
 
 
@@ -27,17 +51,20 @@ var csvData;
 var graphData = {
     x: [],
     y: [],
+    z: [],
     customdata: [],
-    hovertemplate: '<i>X Value</i>: %{x:.2f}<extra></extra>' +
-                   '<br><i>Y Value</i>: %{y:.2f}' +
-                   '<br><i>Z Value</i>: %{customdata:.2f}' +
+    hovertemplate: '<i>%{xaxis.title.text}</i>: %{x:.2f}<extra></extra>' +
+                   '<br><i>%{yaxis.title.text}</i>: %{y:.2f}' +
+                   '<br><i>%{data.z}</i>: %{customdata:.2f}' +
                    '<br><i>Department</i>: %{text}',
     text: [],
     mode: 'markers',
     marker: {
         // needs default size in the default function
         size: [],
-        color: []
+        color: [],
+        text: [],
+        type: 'scatter'
     }
 };
 
@@ -45,10 +72,10 @@ var graphData = {
 // placeholder for the layout, so that we dont need to create a new one all the time
 var template_layout = {
     showlegend: false,
-    height: 600,
-    width: 600,
+    height: 700,
+    width: 700,
     title: {
-        text: 'Cases of domestic violence vs Gini Index',
+        text: '',
         font: {
             family: 'Courier New, monospace',
             size: 20
@@ -98,7 +125,7 @@ function callback(res) {
 }
 
 
-// give  the callback time to get the data to the global vars
+// give  the callback time to get the data to the global vars otherwise all calls to csvData will yield undefinded
 setTimeout(function() {
     defaultLayout();
 }, 100);
@@ -135,7 +162,7 @@ function defaultLayout() {
     graphData["y"] = csvData["gini"]["$data"];
 
     // add y axis label
-    template_layout["yaxis"]["title"]["text"] = "gini"
+    template_layout["yaxis"]["title"]["text"] = "Gini coefficent";
 
     // add data to the hover box
     graphData["text"] = csvData["dep"]["$data"];
@@ -145,6 +172,9 @@ function defaultLayout() {
 
     // save the original value in the customdata array
     graphData["customdata"] = csvData["qhousing"]["$data"];
+
+    // set default text for the bubble size metric in the hoverbox
+    graphData["z"] = 'Quality of housing';
 
     // set the color of the bubbles based on their size
     graphData["marker"]["color"] = returnColorArray(graphData["marker"]["size"]);
@@ -164,16 +194,18 @@ function defaultLayout() {
 
 
 // function to switch out data, it gets the current value from the dropdown menu on change and then creates the new graph
-function changeData(value) {
+function changeData(value,b) {
 
     // add new data for y to the graphData
     graphData.y = csvData[value]["$data"];
 
-    // add new y axis label 
-    template_layout["yaxis"]["title"]["text"] = value;
+    // add new y axis label
+    var dropdown = document.getElementById("dropdownMetric"); 
+    template_layout["yaxis"]["title"]["text"] = dropdown.options[dropdown.selectedIndex].text;
 
     // and a new title
-    template_layout["title"]["text"] = `Cases of domestic violence vs ${value} Index`;
+    // I think this overloads the graph and the same information is already on the y and x axis
+    //template_layout["title"]["text"] = `Cases of domestic violence vs ${value} Index`;
 
     // update the graph
     Plotly.react('graph', [graphData], template_layout);
@@ -191,6 +223,10 @@ function changeBubbleSize(value) {
 
     // update marker color as it depends on the size of the bubbles
     graphData["marker"]["color"] = returnColorArray(graphData["marker"]["size"]);
+
+    // update the bubble size info in the hoverbox
+    var dropdown = document.getElementById("dropdownMetric2"); 
+    graphData["z"] = dropdown.options[dropdown.selectedIndex].text;
 
     // update the graph
     Plotly.react('graph', [graphData], template_layout);
@@ -244,6 +280,6 @@ function setColorBasedOnValue(value) {
         value > 34 ? '#fd8d3c' :
         value > 22 ? '#feb24c' :
         value >= 10 ? '#fed976' :
-        'blue';
+        'grey';
 }
 
