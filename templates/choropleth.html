@@ -6,39 +6,39 @@
 <div>
   <h3>Weapon of Crime</h3>
     <label>
-      <input type="radio" value="0" name = "weapon" id = "all1" checked />all</label>
+      <input type="radio" value="0" name = "weapon" id = "all1" checked/>all</label>
     <label>
-      <input type="radio" value="stabbing weapon" name = "weapon" id = "stabbing weapon" />stabbing weapon</label>
+      <input type="radio" value="stabbing weapon" name = "weapon" id = "stabbing weapon" {% if selected_weapon == 'stabbing weapon' %}checked{% endif %}/>stabbing weapon</label>
     <label>
-      <input type="radio" value="firearm" name = "weapon" id="firearm" />firearm</label>      
+      <input type="radio" value="firearm" name = "weapon" id="firearm" {% if selected_weapon == 'firearm' %}checked{% endif %} />firearm</label>      
     <label>
-      <input type="radio" value="blunt weapon" name = "weapon" id="blunt weapon" />blunt weapon</label>
+      <input type="radio" value="blunt weapon" name = "weapon" id="blunt weapon" {% if selected_weapon == 'blunt weapon' %}checked{% endif %} />blunt weapon</label>
     <label>
-      <input type="radio" value="slashing weapon" name = "weapon" id="slashing weapon" />slashing weapon</label>
+      <input type="radio" value="slashing weapon" name = "weapon" id="slashing weapon" {% if selected_weapon == 'slashing weapon' %}checked{% endif %} />slashing weapon</label>
     <label>
-      <input type="radio" value="no weapon" name = "weapon" id="no weapon" />no weapon</label>
+      <input type="radio" value="no weapon" name = "weapon" id="no weapon" {% if selected_weapon == 'no weapon' %}checked{% endif %} />no weapon</label>
     <label>
-      <input type="radio" value="narcotics" name = "weapon" id="narcotics" />narcotics</label>
+      <input type="radio" value="narcotics" name = "weapon" id="narcotics" {% if selected_weapon == 'narcotics' %}checked{% endif %} />narcotics</label>
 </div>
 <div>
   <h3>Age group</h3>
   <label>
     <input type="radio" value="0" name = "age" id="all2" checked />all</label>
   <label>
-    <input type="radio" value="adult" name = "age"  id="adult" />adult</label>
+    <input type="radio" value="adult" name = "age"  id="adult" {% if selected_age == 'adult' %}checked{% endif %} />adult</label>
   <label>
-    <input type="radio" value="teenager" name = "age"  id="teenager" />teenager</label>
+    <input type="radio" value="teenager" name = "age"  id="teenager" {% if selected_age == 'teenager' %}checked{% endif %} />teenager</label>
   <label>
-    <input type="radio" value="minor" name = "age"  id="minor" />minor</label>
+    <input type="radio" value="minor" name = "age"  id="minor" {% if selected_age == 'minor' %}checked{% endif %} />minor</label>
 </div>
 <div>
   <h3>Gender of Victim</h3>
   <label>
     <input type="radio" value="0" name = "gender" id="all3" checked />all</label>
   <label>
-    <input type="radio" value="male" name = "gender" id="male" />male</label>
+    <input type="radio" value="male" name = "gender" id="male" {% if selected_gender == 'male' %}checked{% endif %} />male</label>
   <label>
-    <input type="radio" value="female" name = "gender" id="female" />female</label>
+    <input type="radio" value="female" name = "gender" id="female" {% if selected_gender == 'female' %}checked{% endif %} />female</label>
 </div>
 
 <div>
@@ -46,7 +46,7 @@
     <label>
       <input type="radio" value="1" name = "col" id="col1" checked />static</label>
     <label>
-      <input type="radio" value="2" name = "col" id="col2" />dynamic</label>
+      <input type="radio" value="2" name = "col" id="col2" {% if col == '2' %}checked{% endif %} />dynamic</label>
 
 </div>  
 
@@ -64,6 +64,7 @@
     <div id="my_dataviza"></div>
     <div id="my_datavizg"></div>
   </div>
+  <div id="instance-div"></div>
 </div>
 
 <style>
@@ -96,7 +97,7 @@
 
 
     width = 600,
-    height = 600 ;
+    height = 700 ;
 
     function drawPie(div, dataz, width2, height2){
 
@@ -172,14 +173,32 @@
         .on("mousemove", mousemove )
         .on("mouseleave", mouseleave )
         .on("click", mouseclick)
+        
 
       svg2.selectAll('Slices')
         .data(data_ready)
         .join('text')
         .text(function(d){ return "" + d.data[0]})
-        .attr("transform", function(d) { return `translate(${arcGenerator.centroid(d)})`})
+        //.attr("transform", function(d) { return `translate(${arcGenerator.centroid(d)})`})
+        .each(function(d) { adjustTextPosition(this, d); })
         .style("text-anchor", "middle")
+        .style("dominant-baseline", "middle")
         .style("font-size", "0.8em")
+        
+
+        function adjustTextPosition(text, d) {
+            var textElement = d3.select(text);
+            var centroid = arcGenerator.centroid(d);
+            var x = centroid[0];
+            var y = centroid[1];
+            var radius = arcGenerator.outerRadius()(d); // Get the outer radius for the specific slice
+            var angle = Math.atan2(y, x);
+            var distance = radius * 0.55; // Adjust the distance factor to move the text towards the center
+            var textX = Math.cos(angle) * distance;
+            var textY = Math.sin(angle) * distance;; // Adjust the distance from the radius
+
+            textElement.attr("transform", `translate(${textX},${textY})`);
+        }
 
     }
 
@@ -205,7 +224,7 @@
     const path = d3.geoPath();
     const projection = d3.geoMercator()
       .scale(1800)
-      .center([-72,5])
+      .center([-73,5])
       .translate([width / 2, height / 2]);
     
     let data = new Map()
@@ -226,6 +245,17 @@
     d3.json("https://raw.githubusercontent.com/slomu/Colombia_Vis/main/data/col.geojson"),]).then(function(loadData){
         let topo = loadData[0]
         
+        const showInstance = function (event, d) {
+          // Get the instance data for the clicked path
+          const instanceData = dat[d.properties.NOMBRE_DPT];
+
+          // Show the instance data in another HTML div
+          const instanceDiv = document.getElementById("instance-div");
+          instanceDiv.innerHTML = "Instance Data: " + instanceData;
+
+          
+        };
+
         const tooltip = d3.select("#my_dataviz")
             .append("div")
             .style("opacity", 0)
@@ -290,6 +320,7 @@
             .on("mouseover", mouseOver )
             .on("mousemove", mouseMove )
             .on("mouseleave", mouseLeave )
+            .on("click", showInstance);
       
     })
   }

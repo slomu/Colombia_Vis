@@ -24,7 +24,11 @@ def my_form():
     for u,v in df5:
         dfa[u] = int(v)
 
-    df6 = df["ARMAS MEDIOS"].value_counts().to_dict().items()  
+    df6_pre = df
+    df6_pre["ARMAS MEDIOS"] = df["ARMAS MEDIOS"].replace("narcotics","other")
+    df6_pre["ARMAS MEDIOS"] = df["ARMAS MEDIOS"].replace("firearm","other")
+    df6_pre["ARMAS MEDIOS"] = df["ARMAS MEDIOS"].replace("slashing weapon","other")
+    df6 = df6_pre["ARMAS MEDIOS"].value_counts().to_dict().items()  
     dfw = {}
     for u,v in df6:
         dfw[u] = int(v)
@@ -42,6 +46,10 @@ def index():
         col = request.form["col"]
         if c1 != "0":
             df = df[df["ARMAS MEDIOS"] == c1]
+        else:
+            df["ARMAS MEDIOS"] = df["ARMAS MEDIOS"].replace("narcotics","other")
+            df["ARMAS MEDIOS"] = df["ARMAS MEDIOS"].replace("firearm","other")
+            df["ARMAS MEDIOS"] = df["ARMAS MEDIOS"].replace("slashing weapon","other")
         if c2 != "0":
             df = df[df["GRUPO ETARIO"] == c2]
         if c3 != "0":
@@ -70,7 +78,7 @@ def index():
         for u,v in df6:
             dfw[u] = int(v)
 
-        return render_template("choropleth.html" , data = dft, dataG = dfg, dataA = dfa, dataW = dfw, col = col)
+        return render_template("choropleth.html" , data = dft, dataG = dfg, dataA = dfa, dataW = dfw, col = col, selected_weapon = c1, selected_age = c2, selected_gender = c3)
 
 
 if __name__ == "__main__":
