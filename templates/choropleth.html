@@ -60,15 +60,33 @@
 <div id="wrapper">
   <div id="my_dataviz"></div>
   <div id="secondwrapper">
-    <div id="my_datavizw"></div>
-    <div id="my_dataviza"></div>
-    <div id="my_datavizg"></div>
+    <div id="pie_a">
+      <div id="my_datavizw"></div>
+      <div id="legendw"></div>
+    </div>
+    <div id="pie_b">
+      <div id="my_dataviza"></div>
+      <div id="legenda"></div>
+    </div>
+    <div id="pie_c">
+      <div id="my_datavizg"></div>
+      <div id="legendg"></div>
+    </div>
   </div>
   <div id="instance-div"></div>
 </div>
 
 <style>
   #wrapper{
+    display : flex;
+  }
+  #pie_a{
+    display : flex;
+  }
+  #pie_b{
+    display : flex;
+  }
+  #pie_c{
     display : flex;
   }
 </style>
@@ -99,7 +117,7 @@
     width = 600,
     height = 700 ;
 
-    function drawPie(div, dataz, width2, height2){
+    function drawPie(div, div2, dataz, width2, height2){
 
       var svg2 = d3.select(div)
           .append("svg")
@@ -132,6 +150,37 @@
         .style("padding", "5px")
         .style("position", "absolute")
         //.style("top", "200px")
+
+      var svg_legend = d3.select(div2)
+        .append("svg")
+        .attr("width", width2)
+        .attr("height", height2)
+        .append("g")
+        .attr("transform", `translate(0, ${30})`)
+
+      // again rebind for legend
+      var legendG = svg_legend.selectAll(".legend") // note appending it to svg_legend and not svg to make positioning easier
+        .data(data_ready)
+        .enter().append("g")
+        .attr("transform", function(d,i){
+          return "translate(" + 0 + "," + (i * 20 + 20) + ")"; // place each legend on the right and bump each one down 15 pixels
+        })
+        .attr("class", "legend");   
+
+      legendG.append("rect") // make a matching color rect
+        .attr("width", 15)
+        .attr("height", 15)
+        .attr("fill", function(d, i) {
+          return color(d.data[1]);
+        });
+
+      legendG.append("text") // add the text
+        .text(function(d){
+          return "" + d.data[0];
+        })
+        .style("font-size", 18)
+        .attr("y", 13)
+        .attr("x", 17);
 
     // Three function that change the tooltip when user hover / move / leave a cell
         const mouseover = function(event,d) {
@@ -175,15 +224,15 @@
         .on("click", mouseclick)
         
 
-      svg2.selectAll('Slices')
-        .data(data_ready)
-        .join('text')
-        .text(function(d){ return "" + d.data[0]})
+      //svg2.selectAll('Slices')
+      //  .data(data_ready)
+      //  .join('text')
+      //  .text(function(d){ return "" + d.data[0]})
         //.attr("transform", function(d) { return `translate(${arcGenerator.centroid(d)})`})
-        .each(function(d) { adjustTextPosition(this, d); })
-        .style("text-anchor", "middle")
-        .style("dominant-baseline", "middle")
-        .style("font-size", "0.8em")
+      //  .each(function(d) { adjustTextPosition(this, d); })
+      //  .style("text-anchor", "middle")
+      //  .style("dominant-baseline", "middle")
+      //  .style("font-size", "0.8em")
         
 
         function adjustTextPosition(text, d) {
@@ -202,9 +251,9 @@
 
     }
 
-    drawPie("#my_datavizw", weapon_data, 200, 200)
-    drawPie("#my_dataviza", age_data, 200, 200)
-    drawPie("#my_datavizg", gender_data, 200, 200)
+    drawPie("#my_datavizw", "#legendw", weapon_data, 200, 200)
+    drawPie("#my_dataviza", "#legenda", age_data, 200, 200)
+    drawPie("#my_datavizg", "#legendg", gender_data, 200, 200)
 
     const svg = d3.select("#my_dataviz")
         .append("svg")
