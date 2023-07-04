@@ -154,7 +154,7 @@ get_data = function(indicators, departements){
     d3.csv("https://media.githubusercontent.com/media/slomu/Colombia_Vis/main/data/data.csv").then(function(data) {
 
         // update Datapoints
-        const click_ind = function(event, d){
+        const sort = function(event, d){
             dep_ordered = {};
             dataset = format_dataset(data, indicators, departements);
             filtered = dataset.filter(obj => {
@@ -170,7 +170,7 @@ get_data = function(indicators, departements){
             return(draw(data, indicators, departements))
         }
 
-        const click_dep = function(event){
+        const unsort = function(event){
             dep_ordered = {};
             dataset = format_dataset(data, indicators, departements);
             filtered = dataset.filter(obj => {
@@ -193,6 +193,15 @@ get_data = function(indicators, departements){
             selected = "";
             
             return draw(data, indicators, departements)
+        }
+
+        const click_ind = function(event, d){
+            if(selected == d){
+                unsort(event)
+            }
+            else{
+                sort(event, d)
+            }
         }
 
         // create Data
@@ -259,7 +268,7 @@ get_data = function(indicators, departements){
                 .style("font-size", 15)
                 .call(d3.axisTop(x).tickSize(0))
                 .select(".domain").remove()
-            svg.selectAll('#xaxis').on("click", click_dep)
+            //svg.selectAll('#xaxis').on("click", click_dep)
             
 
             // Scale for bubble sizes
