@@ -134,7 +134,8 @@ def index():
                     dep = "NORTE DE SANTANDER"
                 if dep == "SANTAFE":
                     dep = "SANTAFE DE BOGOTA D.C"
-
+                if dep == "SAN":
+                    dep = "SAN ANDRES"
 
                 if dep not in result:
                     result[dep] = []
