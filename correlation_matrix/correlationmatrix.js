@@ -68,7 +68,6 @@ function get_Departements(clicked_id){
         }
     }
     departements = checked_dep;
-    console.log(departements)
     return get_data(indicators, departements);
 }
 
@@ -123,7 +122,6 @@ function get_Departements(clicked_id){
 
     // Three function that change the tooltip when user hover / move / leave a cell
     const mouseover_data = function(event,d) {
-        console.log(event)
         tooltip_data
             .style("opacity", 1)
         d3.select(this)
@@ -142,7 +140,6 @@ function get_Departements(clicked_id){
             .style("top", (event.pageY) - 50 + "px")
     }
     const mouseleave_data = function(event,d) {
-        console.log(event)
         tooltip_data
             .style("opacity", 0)
         d3.select(this)
@@ -280,7 +277,6 @@ get_data = function(indicators, departements){
             // Build color scale
             colors = d3.schemeCategory10
             colors.push(`#bf306c`, `#665b4e`, `#f52f59`, `#1f5fc4`)
-            console.log(Object.values(colors))
             color = d3.scaleOrdinal(colors)
 
             // draw Bubbles
