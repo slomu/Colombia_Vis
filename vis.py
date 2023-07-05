@@ -7,7 +7,7 @@ app = Flask(__name__)
 def my_form():
     df = pd.read_csv('data/dv_data.csv')
     df2 = pd.read_csv("data/popdata.csv")
-    cities = pd.read_csv("data/worldcities.csv")
+    cities = pd.read_csv("data/counts.csv")
     df3 = df["DEPARTAMENTO"].value_counts().to_dict().items()
     col = "1"
     dft = {}
@@ -34,16 +34,14 @@ def my_form():
     for u,v in df6:
         dfw[u] = int(v)
     
-    for dep in 
-    dfcity = 
-    
-    return render_template("choropleth.html", data = dft, dataG = dfg, dataA = dfa, dataW = dfw, col = col)
+    return render_template("choropleth.html", data = dft, dataG = dfg, dataA = dfa, dataW = dfw, col = col, dataC = cities)
 
 @app.route("/", methods = ["POST"])
 def index():
     if request.form["action"] == "Submit":
         df = pd.read_csv('data/dv_data.csv')
         df2 = pd.read_csv("data/popdata.csv")
+        cities = pd.read_csv("data/counts.csv")
         c1 = request.form["weapon"]
         c2 = request.form["age"]
         c3 = request.form["gender"]
@@ -82,7 +80,7 @@ def index():
         for u,v in df6:
             dfw[u] = int(v)
 
-        return render_template("choropleth.html" , data = dft, dataG = dfg, dataA = dfa, dataW = dfw, col = col, selected_weapon = c1, selected_age = c2, selected_gender = c3)
+        return render_template("choropleth.html" , data = dft, dataG = dfg, dataA = dfa, dataW = dfw, col = col, dataC = cities, selected_weapon = c1, selected_age = c2, selected_gender = c3)
 
 
 if __name__ == "__main__":

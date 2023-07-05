@@ -56,6 +56,7 @@
 <section data-type='{{ dataA|tojson }}'></section>
 <section data-type='{{ dataW|tojson }}'></section>
 <section data-type='{{ col }}'></section>
+<section data-type='{{ dataC }}'></section>
 </form>
 <div id="wrapper">
   <div id="my_dataviz"></div>
@@ -105,6 +106,8 @@
       var weapon_data = JSON.parse(item.getAttribute("data-type"));
     }else if(count == 5){
       var col = item.getAttribute("data-type");
+    }else if(count == 6){
+      var city_data = item.getAttribute("data-type");
     }
     count += 1   
     }
@@ -345,6 +348,19 @@
                 .attr("fill", "white")
                 .style("stroke", "black")
                 .style("opacity", 1)
+
+                svginst
+                  .selectAll("myCircles")
+                  .data(city_data)
+                  .join("circle")
+                    .attr("cx", d => projection([d[1], d[2]])[0])
+                    .attr("cy", d => projection([d[1], d[2]])[1])
+                    .attr("r", 14)
+                    .style("fill", "69b3a2")
+                    .attr("stroke", "#69b3a2")
+                    .attr("stroke-width", 3)
+                    .attr("fill-opacity", .4)
+
 
           //const instanceData = dat[d.properties.NOMBRE_DPT];
 
