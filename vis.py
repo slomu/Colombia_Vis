@@ -7,6 +7,7 @@ app = Flask(__name__)
 def my_form():
     df = pd.read_csv('data/dv_data.csv')
     df2 = pd.read_csv("data/popdata.csv")
+    cities = pd.read_csv("data/worldcities.csv")
     df3 = df["DEPARTAMENTO"].value_counts().to_dict().items()
     col = "1"
     dft = {}
@@ -32,6 +33,9 @@ def my_form():
     dfw = {}
     for u,v in df6:
         dfw[u] = int(v)
+    
+    for dep in 
+    dfcity = 
     
     return render_template("choropleth.html", data = dft, dataG = dfg, dataA = dfa, dataW = dfw, col = col)
 
