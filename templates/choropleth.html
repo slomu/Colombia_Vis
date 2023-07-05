@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 
 <script src="https://d3js.org/d3.v6.js"></script>
-<h2>	&#127464;&#127476; Domestic Violence in Colombia 	&#127464;&#127476;</h2>
+<h2>	&#127464;&#127476; Domestic Violence in Colombia 	&#x1F1E8;&#x1F1F4;</h2>
 <form method="POST">
 <div id = "labelwrapper">
   <div id = "buttonwrapper">
@@ -380,6 +380,7 @@
               //console.log(d.geometry.coordinates[0][0])
               svginst.selectAll("path").remove()
               svginst.selectAll("circle").remove()
+              svginst.selectAll("text").remove()
 
 
               data.features = topo.features.filter(c => { return c.properties.NOMBRE_DPT==d.properties.NOMBRE_DPT})
@@ -439,6 +440,7 @@
                 const mouseOver3 = function(d) {
                     d3.select(this)
                         .style("stroke", "black")
+                        .style("fill-opacity", 1)
                     tooltip.style("opacity", 1)
                 }
 
@@ -453,6 +455,7 @@
                 const mouseLeave3 = function(d) {
                     d3.select(this)
                         .style("stroke", "grey")
+                        .style("fill-opacity", 0.6)
                     tooltip
                         .style("opacity", 0)
                 }
@@ -467,8 +470,13 @@
                 .style("stroke", "black")
                 .style("opacity", 1)
 
+                            
+              svginst.append("text")
+                .text(d.properties.NOMBRE_DPT)
+                .attr("x", 15)
+                .attr("y", 20);
 
-                svginst
+              svginst
                   .selectAll("myCircles")
                   .data(city_data[d.properties.NOMBRE_DPT])
                   .join("circle")
