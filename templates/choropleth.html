@@ -2,43 +2,49 @@
 <meta charset="utf-8">
 
 <script src="https://d3js.org/d3.v6.js"></script>
+<h1>Domestic Violence in Colombia</h1>
 <form method="POST">
-<div>
+<div id = "labelwrapper">
+  <div id = "buttonwrapper">
   <h3>Weapon of Crime</h3>
-    <label>
-      <input type="radio" value="0" name = "weapon" id = "all1" checked/>all</label>
-    <label>
-      <input type="radio" value="stabbing weapon" name = "weapon" id = "stabbing weapon" {% if selected_weapon == 'stabbing weapon' %}checked{% endif %}/>stabbing weapon</label>
-    <label>
-      <input type="radio" value="firearm" name = "weapon" id="firearm" {% if selected_weapon == 'firearm' %}checked{% endif %} />firearm</label>      
-    <label>
-      <input type="radio" value="blunt weapon" name = "weapon" id="blunt weapon" {% if selected_weapon == 'blunt weapon' %}checked{% endif %} />blunt weapon</label>
-    <label>
-      <input type="radio" value="slashing weapon" name = "weapon" id="slashing weapon" {% if selected_weapon == 'slashing weapon' %}checked{% endif %} />slashing weapon</label>
-    <label>
-      <input type="radio" value="no weapon" name = "weapon" id="no weapon" {% if selected_weapon == 'no weapon' %}checked{% endif %} />no weapon</label>
-    <label>
-      <input type="radio" value="narcotics" name = "weapon" id="narcotics" {% if selected_weapon == 'narcotics' %}checked{% endif %} />narcotics</label>
-</div>
-<div>
   <h3>Age group</h3>
-  <label>
-    <input type="radio" value="0" name = "age" id="all2" checked />all</label>
-  <label>
-    <input type="radio" value="adult" name = "age"  id="adult" {% if selected_age == 'adult' %}checked{% endif %} />adult</label>
-  <label>
-    <input type="radio" value="teenager" name = "age"  id="teenager" {% if selected_age == 'teenager' %}checked{% endif %} />teenager</label>
-  <label>
-    <input type="radio" value="minor" name = "age"  id="minor" {% if selected_age == 'minor' %}checked{% endif %} />minor</label>
-</div>
-<div>
   <h3>Gender of Victim</h3>
+  </div>
+<div id = "buttonwrapper">
+
+    <label>
+      <input  type="radio" value="0" name = "weapon" id = "all1" checked/>all</label>
+    <label>
+      <input  type="radio" value="stabbing weapon" name = "weapon" id = "stabbing weapon" {% if selected_weapon == 'stabbing weapon' %}checked{% endif %}/>stabbing weapon</label>
+    <label>
+      <input  type="radio" value="firearm" name = "weapon" id="firearm" {% if selected_weapon == 'firearm' %}checked{% endif %} />firearm</label>      
+    <label>
+      <input  type="radio" value="blunt weapon" name = "weapon" id="blunt weapon" {% if selected_weapon == 'blunt weapon' %}checked{% endif %} />blunt weapon</label>
+    <label>
+      <input  type="radio" value="slashing weapon" name = "weapon" id="slashing weapon" {% if selected_weapon == 'slashing weapon' %}checked{% endif %} />slashing weapon</label>
+    <label>
+      <input  type="radio" value="no weapon" name = "weapon" id="no weapon" {% if selected_weapon == 'no weapon' %}checked{% endif %} />no weapon</label>
+    <label>
+      <input  type="radio" value="narcotics" name = "weapon" id="narcotics" {% if selected_weapon == 'narcotics' %}checked{% endif %} />narcotics</label>
+
+
   <label>
-    <input type="radio" value="0" name = "gender" id="all3" checked />all</label>
+    <input  type="radio" value="0" name = "age" id="all2" checked />all</label>
   <label>
-    <input type="radio" value="male" name = "gender" id="male" {% if selected_gender == 'male' %}checked{% endif %} />male</label>
+    <input  type="radio" value="adult" name = "age"  id="adult" {% if selected_age == 'adult' %}checked{% endif %} />adult</label>
   <label>
-    <input type="radio" value="female" name = "gender" id="female" {% if selected_gender == 'female' %}checked{% endif %} />female</label>
+    <input  type="radio" value="teenager" name = "age"  id="teenager" {% if selected_age == 'teenager' %}checked{% endif %} />teenager</label>
+  <label>
+    <input  type="radio" value="minor" name = "age"  id="minor" {% if selected_age == 'minor' %}checked{% endif %} />minor</label>
+
+
+  <label>
+    <input  type="radio" value="0" name = "gender" id="all3" checked />all</label>
+  <label>
+    <input  type="radio" value="male" name = "gender" id="male" {% if selected_gender == 'male' %}checked{% endif %} />male</label>
+  <label>
+    <input  type="radio" value="female" name = "gender" id="female" {% if selected_gender == 'female' %}checked{% endif %} />female</label>
+  </div>
 </div>
 
 <div>
@@ -56,7 +62,7 @@
 <section data-type='{{ dataA|tojson }}'></section>
 <section data-type='{{ dataW|tojson }}'></section>
 <section data-type='{{ col }}'></section>
-<section data-type='{{ dataC }}'></section>
+<section data-type='{{ dataC|tojson }}'></section>
 </form>
 <div id="wrapper">
   <div id="my_dataviz"></div>
@@ -78,6 +84,17 @@
 </div>
 
 <style>
+  #buttonwrapper{
+    display : flex;
+  }
+  #labelwrapper{
+    display : flex;
+    flex-direction: column;
+  }
+
+  h3{
+    width: 100%;
+  }
   #wrapper{
     display : flex;
   }
@@ -107,7 +124,7 @@
     }else if(count == 5){
       var col = item.getAttribute("data-type");
     }else if(count == 6){
-      var city_data = item.getAttribute("data-type");
+      var city_data = JSON.parse(item.getAttribute("data-type"));
     }
     count += 1   
     }
@@ -322,6 +339,7 @@
           // Get the instance data for the clicked path
               //console.log(d.geometry.coordinates[0][0])
               svginst.selectAll("path").remove()
+              svginst.selectAll("circle").remove()
 
 
               data.features = topo.features.filter(c => { return c.properties.NOMBRE_DPT==d.properties.NOMBRE_DPT})
@@ -336,30 +354,73 @@
                 y = y/d.geometry.coordinates[0].length
                 return [x,y]
               }
+
+              const projection = d3.geoMercator()
+                  .scale(7500)
+                  .center(xy(d))
+                  .translate([width / 2, height / 2])
+
+              const size = d3.scaleLinear()
+                  .domain([1,27000])  // What's in the data
+                  .range([ 4, 50])  // Size in pixel
+
+              const tooltip2 = d3.select("#instance-div")
+                .append("div")
+                .style("opacity", 0)
+                .attr("class", "tooltip")
+                .style("background-color", "white")
+                .style("border", "solid")
+                .style("border-width", "2px")
+                .style("border-radius", "5px")
+                .style("padding", "5px")
+                .style("position", "absolute")
+
+                const mouseOver3 = function(d) {
+                    d3.select(this)
+                        .style("stroke", "black")
+                    tooltip.style("opacity", 1)
+                }
+
+                const mouseMove3 = function(event,d) {
+                    tooltip
+                        .html("" + d.city + "<br>"+ d.cases + " cases")
+                        .style("left", (event.pageX)+20 + "px")
+                        .style("top", (event.pageY) + "px")
+
+                }
+
+                const mouseLeave3 = function(d) {
+                    d3.select(this)
+                        .style("stroke", "grey")
+                    tooltip
+                        .style("opacity", 0)
+                }
+
               svginst.append("g")
                 .selectAll("path")
                 .data(data.features)
                 .join("path")
                 .attr("d", d3.geoPath()
-                .projection(d3.geoMercator()
-                  .scale(7500)
-                  .center(xy(d))
-                  .translate([width / 2, height / 2])))
+                .projection(projection))
                 .attr("fill", "white")
                 .style("stroke", "black")
                 .style("opacity", 1)
 
+
                 svginst
                   .selectAll("myCircles")
-                  .data(city_data)
+                  .data(city_data[d.properties.NOMBRE_DPT])
                   .join("circle")
-                    .attr("cx", d => projection([d[1], d[2]])[0])
-                    .attr("cy", d => projection([d[1], d[2]])[1])
-                    .attr("r", 14)
-                    .style("fill", "69b3a2")
-                    .attr("stroke", "#69b3a2")
-                    .attr("stroke-width", 3)
-                    .attr("fill-opacity", .4)
+                    .attr("cx", d => projection([d.long, d.lat])[0])
+                    .attr("cy", d => projection([d.long, d.lat])[1])
+                    .attr("r", d => size(d.cases))
+                    .style("fill", "orange")
+                    .attr("stroke", "grey")
+                    .attr("stroke-width", 2)
+                    .attr("fill-opacity", .6)
+                    .on("mouseover", mouseOver3 )
+                    .on("mousemove", mouseMove3 )
+                    .on("mouseleave", mouseLeave3 )
 
 
           //const instanceData = dat[d.properties.NOMBRE_DPT];
@@ -380,9 +441,11 @@
             //.style("border-width", "2px")
             //.style("border-radius", "2px")
             //.style("padding", "5px")
-
-          
-        
+            .style("border", "solid")
+            .style("border-width", "2px")
+            .style("border-radius", "5px")
+            .style("padding", "5px")
+            .style("position", "absolute")
         const mouseOver = function(d) {
             //d3.selectAll(".properties.NOMBRE_DPT")
                 //.style("opacity", .5)
@@ -395,8 +458,8 @@
         const mouseMove = function(event,d) {
             tooltip
                 .html("" + d.properties.NOMBRE_DPT + "<br>"+ (Math.round((dat[(d.properties.NOMBRE_DPT)])*100) / 100) + " cases per 1000 inhabitants")
-                .style("left", (event.x)/2 + "px")
-                .style("top", (event.y)/2 + "px")
+                .style("left", (event.pageX)+20 + "px")
+                .style("top", (event.pageY) + "px")
 
         }
 
