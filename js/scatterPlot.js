@@ -83,7 +83,7 @@ var template_layout = {
     },
     xaxis: {
         title: {
-            text: 'Domestic Violence Cases per 1000 population',
+            text: 'Domestic Violence Cases per 1000 citizens',
             font: {
                 family: 'Courier New, monospace',
                 size: 18,
