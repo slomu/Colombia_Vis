@@ -14,8 +14,6 @@ app = Flask(__name__)
 def my_form():
     df = pd.read_csv('data/dv_data.csv')
     df2 = pd.read_csv("data/popdata.csv")
-    #with open('data/counts.json', 'r') as openfile:
-    #    cities = json.load(openfile)
         
     df3 = df["DEPARTAMENTO"].value_counts().to_dict().items()
     col = "1"
@@ -42,12 +40,9 @@ def my_form():
     dfw = {}
     for u,v in df6:
         dfw[u] = int(v)
-        
-               
+                 
     citydata = pd.read_csv("data/worldcities.csv")
-    #df = pd.read_csv("data/dv_data.csv")
     counts = df["MUNICIPIO"].value_counts()
-    #counts.to_csv("data/counts.csv")
 
     result = {}
     for city in citydata["city_ascii"]:
@@ -80,8 +75,6 @@ def index():
     if request.form["action"] == "Submit":
         df = pd.read_csv('data/dv_data.csv')
         df2 = pd.read_csv("data/popdata.csv")
-        #with open('data/counts.json', 'r') as openfile:
-        #    cities = json.load(openfile)
         
         c1 = request.form["weapon"]
         c2 = request.form["age"]
@@ -101,9 +94,6 @@ def index():
         dft = {}
         for x,y in df3:
             p = int(df2[df2["dep"] == x].population)
-            #if c1 != "0" or c2 != "0" or c3 == "MASCULINO":
-                #dft[x] = (round((y/(p/10000)), 2))
-            #else:
             dft[x] = (round((y/(p/1000)), 2))
 
         df4 = df["GENERO"].value_counts().to_dict().items()    
@@ -122,9 +112,7 @@ def index():
             dfw[u] = int(v)
             
         citydata = pd.read_csv("data/worldcities.csv")
-        #df = pd.read_csv("data/dv_data.csv")
         counts = df["MUNICIPIO"].value_counts()
-        #counts.to_csv("data/counts.csv")
 
         result = {}
         for city in citydata["city_ascii"]:
@@ -151,7 +139,6 @@ def index():
             
         u_data = json.dumps(result, default=convert_int64)
         city_data = json.loads(u_data)
-
 
         return render_template("choropleth.html" , data = dft, dataG = dfg, dataA = dfa, dataW = dfw, col = col, selected_weapon = c1, selected_age = c2, selected_gender = c3, dataC = city_data)
 
