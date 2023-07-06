@@ -1,5 +1,5 @@
 // Author : Tim Karwasz
-// This script uses plotly to draw grpahs. Ploty is based on D3
+// This script uses plotly to draw grpahs. Plotly is based on D3
 
 // These consts are used to dynamically create the dropdown metric list
 // the key from the object is displayed on the page and the value is used to get the data from the csv
@@ -18,7 +18,7 @@ const dropdownSelections = {
     "Mean years education of men aged 20+": "menedyr20",
     "Educational attendance of children 6-20": "edchild",
     "Percentage of women in paid employment": "workwom",
-    "Mean age difference partners (husband-wife)" :"agedifmar",
+    "Mean age difference partners (husband-wife)": "agedifmar",
     "Infant mortality rate": "infmort"
 }
 
@@ -38,12 +38,12 @@ const dropdownBubbleSelections = {
     "Mean years education of men aged 20+": "menedyr20",
     "Educational attendance of children 6-20": "edchild",
     "Percentage of women in paid employment": "workwom",
-    "Mean age difference partners (husband-wife)" :"agedifmar",
+    "Mean age difference partners (husband-wife)": "agedifmar",
     "Infant mortality rate": "infmort"
 }
 
 
-// placeholder for the data that are read in from the csv
+// placeholder for the data which is read from the csv
 var csvData;
 
 
@@ -52,15 +52,15 @@ var graphData = {
     x: [],
     y: [],
     z: [],
+    d
     customdata: [],
     hovertemplate: '<i>%{xaxis.title.text}</i>: %{x:.2f}<extra></extra>' +
-                   '<br><i>%{yaxis.title.text}</i>: %{y:.2f}' +
-                   '<br><i>%{data.z}</i>: %{customdata:.2f}' +
-                   '<br><i>Department</i>: %{text}',
+        '<br><i>%{yaxis.title.text}</i>: %{y:.2f}' +
+        '<br><i>%{data.z}</i>: %{customdata:.2f}' +
+        '<br><i>Department</i>: %{text}',
     text: [],
     mode: 'markers',
     marker: {
-        // needs default size in the default function
         size: [],
         color: [],
         text: [],
@@ -69,7 +69,7 @@ var graphData = {
 };
 
 
-// placeholder for the layout, so that we dont need to create a new one all the time
+// placeholder for the layout
 var template_layout = {
     showlegend: false,
     height: 700,
@@ -185,6 +185,7 @@ function defaultLayout() {
     myPlot.on('plotly_hover', function(data) {
 
         // find the data which can be accessed
+        // used for debugging
         console.log(data["points"][0]);
 
         //alert(`You hovered over point number ${data["points"][0]["pointNumber"]} with an x value of ${data["points"][0]["x"]} and a y value of ${data["points"][0]["y"]}, the text reads ${data["points"][0]["text"]} `);
@@ -194,13 +195,13 @@ function defaultLayout() {
 
 
 // function to switch out data, it gets the current value from the dropdown menu on change and then creates the new graph
-function changeData(value,b) {
+function changeData(value, b) {
 
     // add new data for y to the graphData
     graphData.y = csvData[value]["$data"];
 
     // add new y axis label
-    var dropdown = document.getElementById("dropdownMetric"); 
+    var dropdown = document.getElementById("dropdownMetric");
     template_layout["yaxis"]["title"]["text"] = dropdown.options[dropdown.selectedIndex].text;
 
     // and a new title
@@ -225,7 +226,7 @@ function changeBubbleSize(value) {
     graphData["marker"]["color"] = returnColorArray(graphData["marker"]["size"]);
 
     // update the bubble size info in the hoverbox
-    var dropdown = document.getElementById("dropdownMetric2"); 
+    var dropdown = document.getElementById("dropdownMetric2");
     graphData["z"] = dropdown.options[dropdown.selectedIndex].text;
 
     // update the graph
@@ -233,7 +234,7 @@ function changeBubbleSize(value) {
 }
 
 
-// this function takes an array as input and returns the same array scaled to a pre-defined range (10-60)
+// this function takes an array as input and returns the same array scaled to a pre-defined range (10-70)
 function scaleDataValuesAndReturn(dataArray) {
 
     // input array
@@ -252,7 +253,7 @@ function scaleDataValuesAndReturn(dataArray) {
 
 
 // this small helper function takes a value and the range that value is in, 
-// as well as the range the value shall be in after the function call and converts the value 
+// as well as the range the value shall be in after the function call and converts the value (linear interpolation)
 function convertRange(value, r1, r2) {
     return (value - r1[0]) * (r2[1] - r2[0]) / (r1[1] - r1[0]) + r2[0];
 }
@@ -282,4 +283,3 @@ function setColorBasedOnValue(value) {
         value >= 10 ? '#fed976' :
         'grey';
 }
-
