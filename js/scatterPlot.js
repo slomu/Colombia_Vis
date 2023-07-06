@@ -52,7 +52,6 @@ var graphData = {
     x: [],
     y: [],
     z: [],
-    d
     customdata: [],
     hovertemplate: '<i>%{xaxis.title.text}</i>: %{x:.2f}<extra></extra>' +
         '<br><i>%{yaxis.title.text}</i>: %{y:.2f}' +
