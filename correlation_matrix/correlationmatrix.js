@@ -72,8 +72,8 @@ function get_Departements(clicked_id){
 }
 
 // tooltip for indicator axis
-    // create tooltip
-    const tooltip_ind = d3.select("#my_dataviz")
+// create tooltip
+const tooltip_ind = d3.select("#my_dataviz")
     .append("div")
     .style("opacity", 0)
     .attr("class", "tooltip")
@@ -84,32 +84,32 @@ function get_Departements(clicked_id){
     .style("padding", "5px")
     .style("position", "absolute")
 
-    // Three function that change the tooltip when user hover / move / leave a cell
-    const mouseover_ind = function(event) {
-        tooltip_ind
-            .style("opacity", 1)
-        d3.select(this)
-            .style("stroke", "black")
-    }
+// Three function that change the tooltip when user hover / move / leave a cell
+const mouseover_ind = function(event) {
+    tooltip_ind
+        .style("opacity", 1)
+    d3.select(this)
+        .style("stroke", "black")
+}
 
-    const mousemove_ind = function(event,d) {
-        tooltip_ind
-            .html("Indicator: " + d
-                + "<br>Description: " + ind_descriptions[d]
-            )
-            .style("left", (event.x)+20 + "px")
-            .style("top", (event.y) + "px")
-    }
-    const mouseleave_ind = function(event) {
-        tooltip_ind
-            .style("opacity", 0)
-        d3.select(this)
-        .style("stroke", function(d){if(d == selected){return "black"}else{return "None"}})
-    }
+const mousemove_ind = function(event,d) {
+    tooltip_ind
+        .html("Indicator: " + d
+            + "<br>Description: " + ind_descriptions[d]
+        )
+        .style("left", (event.x)+20 + "px")
+        .style("top", (event.y) + "px")
+}
+const mouseleave_ind = function(event) {
+    tooltip_ind
+        .style("opacity", 0)
+    d3.select(this)
+    .style("stroke", function(d){if(d == selected){return "black"}else{return "None"}})
+}
 
-    // tooltip for datapoints
-    // create tooltip
-    const tooltip_data = d3.select("#my_dataviz")
+// tooltip for datapoints
+// create tooltip
+const tooltip_data = d3.select("#my_dataviz")
     .append("div")
     .style("opacity", 0)
     .attr("class", "tooltip")
@@ -120,34 +120,36 @@ function get_Departements(clicked_id){
     .style("padding", "5px")
     .style("position", "absolute")
 
-    // Three function that change the tooltip when user hover / move / leave a cell
-    const mouseover_data = function(event,d) {
-        tooltip_data
-            .style("opacity", 1)
-        d3.select(this)
-            .style("stroke", "black")
-            .style("fill-opacity", 1)
-    }
+// Three function that change the tooltip when user hover / move / leave a cell
+const mouseover_data = function(event,d) {
+    tooltip_data
+        .style("opacity", 1)
+    d3.select(this)
+        .style("stroke", "black")
+        .style("fill-opacity", 1)
+}
 
-    const mousemove_data = function(event,d) {
-        var target = event.target.__data__
-        tooltip_data
-            .html("Departement: " + target.dep 
-                + "<br>Indicator: " + target.variable 
-                + "<br>Value: " + Math.round((target.value + Number.EPSILON) * 100) / 100
-            )
-            .style("left", (event.pageX)+ 25 + "px")
-            .style("top", (event.pageY) - 50 + "px")
-    }
-    const mouseleave_data = function(event,d) {
-        tooltip_data
-            .style("opacity", 0)
-        d3.select(this)
-        .style("stroke", function(d){if(d.variable == selected){return "black"}else{return color(d.variable)}})
-        .style("fill-opacity", function(d){if(d.variable == selected){return 0.6}else{return 0.1}})
-    }
+const mousemove_data = function(event,d) {
+    var target = event.target.__data__
+    tooltip_data
+        .html("Departement: " + target.dep 
+            + "<br>Indicator: " + target.variable 
+            + "<br>Value: " + Math.round((target.value + Number.EPSILON) * 100) / 100
+        )
+        .style("left", (event.pageX)+ 25 + "px")
+        .style("top", (event.pageY) - 50 + "px")
+}
+
+const mouseleave_data = function(event,d) {
+    tooltip_data
+        .style("opacity", 0)
+    d3.select(this)
+    .style("stroke", function(d){if(d.variable == selected){return "black"}else{return color(d.variable)}})
+    .style("fill-opacity", function(d){if(d.variable == selected){return 0.6}else{return 0.1}})
+}
 
 get_data = function(indicators, departements){
+
     d3.csv("https://media.githubusercontent.com/media/slomu/Colombia_Vis/main/data/data.csv").then(function(data) {
 
         // update Datapoints
@@ -211,7 +213,6 @@ get_data = function(indicators, departements){
             for(let i = 0; i < filtered.length; i++){
                 for(ind of indicators){
                     let row = {};
-                    //let ind = indicators[k];
                     if(ind == "gini"){
                         row = {dep: filtered[i].dep, variable: ind, value: parseFloat((filtered[i][ind] * 100))};
                     }else{
@@ -264,9 +265,7 @@ get_data = function(indicators, departements){
                 .attr("id", "xaxis")
                 .style("font-size", 15)
                 .call(d3.axisTop(x).tickSize(0))
-                .select(".domain").remove()
-            //svg.selectAll('#xaxis').on("click", click_dep)
-            
+                .select(".domain").remove()            
 
             // Scale for bubble sizes
             var radius = d3.scaleLinear()
@@ -289,7 +288,6 @@ get_data = function(indicators, departements){
                 .style("fill", function(d) { return color(d.variable)} )
                 .style("fill-opacity", function(d){if(d.variable == selected){return 0.6}else{return 0.1}})
                 .style("stroke", function(d){if(d.variable == selected){return "black"}else{return color(d.variable)}})
-                //.style("stroke", function(d) { return color(d.variable)} )
                 .style("stroke-width", 3)
                 .on("mouseover", mouseover_data)
                 .on("mousemove", mousemove_data)
